@@ -2,18 +2,22 @@
 autowrapt-logger
 ================
 
-A Python module for print logging of a Python application,
-without the need to actually modify the Python application itself to
-setup the monkey patches.
+A Python module that logging to ``stdout`` the delay time of ``module:method`` specified as an env,
+without the need to actually modify the Python application itself to setup the monkey patches.
 
-The package works in conjunction with the ``autowrapt`` and ``wrapt`` module. One would
-create post import hook patch modules per ``autowrapt`` module requirements,
-and then list the names of the setuptools entrypoints you wish to activate
-in the ``AUTOWRAPT_BOOTSTRAP`` environment variable, when executing Python
-within the environment that the ``autowrapt`` module is installed.
+============
+Installation
+============
+::
 
-To understand what is possible, a set of examples is also installed with
-this package. To see the examples in action run the following::
+    pip install autowrapt-logger
+
+=====
+Usage
+=====
+The autowrapt-logger can then be activated without any code changes required by setting the following environment variable for your Python application::
 
     AUTOWRAPT_BOOTSTRAP=autowrapt_logger INSTRUMENT_LIST="worker:logic_a,worker:logic_b,worker:get_db_data,worker:job" python3 example.py
+
+This will cause the autowrapt-logger Python package to automatically instrument (like ``module:method``) your Python application. it will print delay for instrumented method.
 
