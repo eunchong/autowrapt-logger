@@ -12,12 +12,15 @@ def load(_):
         sys.argv = ['']
     return None
 
+def logging(msg):
+    print(json.dumps(dict({'autowrapt-logger':__version__}, **msg)))
+
 def logging_wrapper(wrapped, instance, args, kwargs):
     st = time()
     result = wrapped(*args, **kwargs)
     et = time()
 
-    print(json.dumps({'autowrapt-logger':__version__, 'name': '%s:%s'%(wrapped.__module__, wrapped.__name__), 'elapsed_time': et-st}))
+    logging({'name': '%s:%s'%(wrapped.__module__, wrapped.__name__), 'elapsed_time': et-st})
     return result
 
 def hook():
@@ -36,9 +39,13 @@ def hook():
         for module in modules:
             @wrapt.when_imported(module)
             def apply_patches(module):
-                for method in modules[module.__name__]:
-                    wrapt.wrap_function_wrapper(module, method, logging_wrapper)
-    except:
-        pass
+                try:
+                    for method in modules[module.__name__]:
+                        wrapt.wrap_function_wrapper(module, method, logging_wrapper)
+                except Exception as e:
+                    logging({'error': str(e)})
+
+    except Exception as e:
+        logging({'error': str(e)})
 
 hook()
