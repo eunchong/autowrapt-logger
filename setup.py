@@ -1,13 +1,17 @@
+import imp
 from os import path
 
 from setuptools import setup
+
+VERSION = imp.load_source('version', path.join('.', 'src', 'version.py'))
+VERSION = VERSION.__version__
 
 def read(fname):
     return open(path.join(path.dirname(__file__), fname)).read()
 
 setup_kwargs = dict(
     name = 'autowrapt-logger',
-    version = '1.2',
+    version = VERSION,
     description = 'logging by environment',
     long_description_content_type='text/x-rst',
     long_description=read('README.rst'),
