@@ -17,7 +17,7 @@ def logging_wrapper(wrapped, instance, args, kwargs):
     result = wrapped(*args, **kwargs)
     et = time()
 
-    print(json.dumps({'autowrapt-logger':__version__, 'name': '%s:%s'%(wrapped.__module__, wrapped.__name__), 'delay': et-st}))
+    print(json.dumps({'autowrapt-logger':__version__, 'name': '%s:%s'%(wrapped.__module__, wrapped.__name__), 'elapsed_time': et-st}))
     return result
 
 def hook():
